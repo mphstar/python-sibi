@@ -16,7 +16,7 @@ hands = mp_hands.Hands(static_image_mode=True, max_num_hands=1, min_detection_co
 cap = cv2.VideoCapture(0)
 
 model = tf.keras.models.load_model('output/mymodel.h5')
-abjads = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y']
+abjads = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Tidak dikenali']
 # abjads = ['A', 'B', 'C', 'D']
 
 def calc_landmark_list(image, landmarks):

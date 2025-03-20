@@ -17,7 +17,7 @@ RANDOM_SEED = 42
 dataset = 'output/hasil_deteksi_tangan.csv'
 model_save_path = 'output/mymodel.h5'
 
-NUM_CLASSES = 24
+NUM_CLASSES = 25
 
 X_dataset = np.loadtxt(dataset, delimiter=',', dtype='float32', usecols=list(range(1, (21 * 2) + 1)))
 y_dataset = np.loadtxt(dataset, delimiter=',', dtype='int32', usecols=(0))
@@ -26,9 +26,9 @@ X_train, X_test, y_train, y_test = train_test_split(X_dataset, y_dataset, train_
 
 model = tf.keras.models.Sequential([
     tf.keras.layers.Reshape((21, 2), input_shape=(21 * 2,)),
-    tf.keras.layers.Bidirectional(tf.keras.layers.LSTM(256, return_sequences=True)),
-    tf.keras.layers.Bidirectional(tf.keras.layers.LSTM(256, return_sequences=True)),
-    tf.keras.layers.Bidirectional(tf.keras.layers.LSTM(128)),
+    tf.keras.layers.Bidirectional(tf.keras.layers.LSTM(128, return_sequences=True)),
+    tf.keras.layers.Bidirectional(tf.keras.layers.LSTM(128, return_sequences=True)),
+    tf.keras.layers.Bidirectional(tf.keras.layers.LSTM(64)),
     tf.keras.layers.Dropout(0.3),
     tf.keras.layers.Dense(256, activation='selu'),
     tf.keras.layers.Dropout(0.3),
@@ -38,12 +38,12 @@ model = tf.keras.models.Sequential([
 optimizer = tf.keras.optimizers.AdamW(learning_rate=0.001, weight_decay=1e-4)
 model.compile(optimizer=optimizer, loss='sparse_categorical_crossentropy', metrics=['accuracy'])
 
-callbacks = [
-    EarlyStopping(monitor='val_loss', patience=10, restore_best_weights=True),
-    ReduceLROnPlateau(monitor='val_loss', factor=0.5, patience=5)
-]
+# callbacks = [
+#     EarlyStopping(monitor='val_loss', patience=10, restore_best_weights=True),
+#     ReduceLROnPlateau(monitor='val_loss', factor=0.5, patience=5)
+# ]
 
-history = model.fit(X_train, y_train, epochs=100, validation_data=(X_test, y_test), callbacks=callbacks)
+history = model.fit(X_train, y_train, epochs=100, validation_data=(X_test, y_test))
 
 model.summary()
 
